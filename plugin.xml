@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ - (c) Copyright IBM Corporation 2016, 2017.
+ - This is licensed under the following license.
+ - The Eclipse Public 1.0 License (http://www.eclipse.org/legal/epl-v10.html)
+ - U.S. Government Users Restricted Rights:  Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
+-->
+<plugin
+        xmlns="http://www.urbancode.com/PluginXMLSchema_v1"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<header>
+		<identifier id="com.hcl.tws.plugin.devops" version="1" name="Workload Automation"/>
+		<description>The Workload Automation plug-in enables you to deploy objects</description>
+		<tag>Workload Automation</tag>
+	</header>
+
+	<!-- ==================================== -->
+	<!--   STEPS                              -->
+	<!-- ==================================== -->
+
+	<!-- ==================================== -->
+	<!--   Import Batch Application           -->
+	<!-- ==================================== -->
+	<step-type name="Import Job Stream Definition (Distributed)">
+		<description>Deploy job streams on distributed engines</description>
+		<properties>
+			<property name="wa_path" required="true">
+				<property-ui type="textBox"
+                       label="Workload Automation Path"
+                       description="Workload Automation installation path."
+					   default-value="/opt/IBM/TWA/TWS"/>
+			</property>
+			<property name="dir">
+				<property-ui type="textBox"
+                       label="Directory Offset"
+                       description="The directory related to the current working directory containing the files to operate on."/>
+			</property>
+			<property name="waPrefix">
+				<property-ui type="textBox"
+                       label="Workload Automation Prefix"
+                       description="The prefix to be used in environment properties for Workload Automation mapping."
+						default-value="WA_"/>
+			</property>
+			<property name="envProps">
+				<property-ui type="textBox"
+                       label="Environment Properties"
+                       description="A list of environment properties, separated by commas. For example, specify
+                                    ${p:environment/allProperties} to add all environment properties as name-value pairs to the
+                                    list of properties to update."
+						default-value="${p:environment/allProperties}"/>
+			</property>
+            <property name="replace" >
+				<property-ui type="checkBox"
+                       label="Replace Existing Definition"
+                       description="The objects that were initially created at the first deploy are updated, if they are still present in the database, created if they are no longer present, and deleted if they are no longer present in this version of the objects."/>
+			</property>
+			<property name="customEncoding" >
+				<property-ui type="textBox"
+                       label="Custom Encoding"
+                       description="Specify a character encoding to use when accessing the properties file. This field takes
+                                    precedence over Use System Encoding." />
+			</property>
+			<property name="useSystemEncoding" >
+				<property-ui type="checkBox"
+                       label="Use System Encoding"
+                       description="Select to use the local character encoding of the agent when accessing the properties
+                                    file."/>
+			</property>
+        </properties>
+
+		<post-processing>
+		<![CDATA[
+			properties.put("Status", properties.get("exitCode") == 0 ? "Success" : "Failure");
+		]]>
+		</post-processing>
+
+
+		<command program="${GROOVY_HOME}/bin/groovy">
+			<arg value="-cp"/>
+			<arg path="classes:lib"/>
+			<arg file="tws_update_and_deploy_wat.groovy" />
+			<arg file="${PLUGIN_INPUT_PROPS}"/>
+			<arg file="${PLUGIN_OUTPUT_PROPS}"/>
+		</command>
+	</step-type>
+	<!-- ==================================== -->
+	<!--   Import WAPPL (z/OS)                -->
+	<!-- ==================================== -->
+	<step-type name="Generate JCL to import Job Stream Definition (zOS)">
+		<description>Generate the JCL to deploy job streams on zOS engines</description>
+		<properties>
+			<property name="dir">
+				<property-ui type="textBox"
+                       label="Directory Offset"
+                       description="The directory related to the current working directory containing the files to operate on."/>
+			</property>
+            <property name="job_card">
+				<property-ui type="textBox"
+                       label="Job Card"
+                       description="Additional parameters for Job Card"
+					   default-value="NOTIFY=&amp;SYSUID,MSGCLASS=9"/>
+			</property>
+			<property name="jcllib" required="true">
+				<property-ui type="textBox"
+                       label="JCL Samples Library"
+                       description="Name of the library containing the JCL samples"
+					   default-value=""/>
+			</property>
+			<property name="subsystem" required="true">
+				<property-ui type="textBox"
+                       label="Subsystem Name"
+                       description="The name of the subsystem"
+					   default-value=""/>
+			</property>
+			<property name="waPrefix">
+				<property-ui type="textBox"
+                       label="Workload Automation Prefix"
+                       description="The prefix to be used in the environment properties for Workload Automation translate."
+						default-value="WA_"/>
+			</property>
+			<property name="envProps">
+				<property-ui type="textBox"
+                       label="Environment Properties"
+                       description="A list of environment properties, separated by commas. For example, specify
+                                    ${p:environment/allProperties} to add all environment properties as name-value pairs to the
+                                    list of object names to translate."
+						default-value="UTF-8"/>
+			</property>
+            <property name="customEncoding" >
+				<property-ui type="textBox"
+                       label="Custom Encoding"
+                       description="Specify a character encoding to use when accessing the file with the definition. This field takes
+                                    precedence over Use System Encoding." />
+			</property>
+			<property name="useSystemEncoding" >
+				<property-ui type="checkBox"
+                       label="Use System Encoding"
+                       description="Select to use the local character encoding of the agent when accessing the file with the definition."/>
+			</property>
+		</properties>
+
+		<post-processing>
+		<![CDATA[
+			properties.put("Status", properties.get("exitCode") == 0 ? "Success" : "Failure");
+		]]>
+		</post-processing>
+
+
+		<command program="${GROOVY_HOME}/bin/groovy">
+			<arg value="-cp"/>
+			<arg path="classes:${GROOVY_HOME}/embeddable/*"/>
+			<arg file="tws_update_and_deploy_wappl.groovy" />
+			<arg file="${PLUGIN_INPUT_PROPS}"/>
+			<arg file="${PLUGIN_OUTPUT_PROPS}"/>
+		</command>
+	</step-type>
+</plugin>
