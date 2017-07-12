@@ -78,7 +78,7 @@
 
 		<command program="${GROOVY_HOME}/bin/groovy">
 			<arg value="-cp"/>
-			<arg path="classes:lib/ant-1.10.1.jar"/>
+			<arg path="classes:lib/ant-1.8.2.jar"/>
 			<arg file="tws_update_and_deploy_wat.groovy" />
 			<arg file="${PLUGIN_INPUT_PROPS}"/>
 			<arg file="${PLUGIN_OUTPUT_PROPS}"/>
