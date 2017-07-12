@@ -1,0 +1,31 @@
+language: groovy
+rvm:
+- 1.8.8
+install:
+- gradle build
+before_script:
+- gradle test
+- export VERSION=${TRAVIS_TAG}.${TRAVIS_COMMIT:0:7}
+script:
+- gradle -PpluginVersion=${VERSION}
+jdk:
+- oraclejdk8
+- oraclejdk7
+- openjdk7
+- openjdk6
+notifications:
+  slack:
+    secure: O0lx+FvWlG70Ypg3DVsAKUArJr6yCsDa1muKFCUnBNTKmNhhGRIeGiyAjfTwugc7njU70k2Oeo+fN9PKyIlYdrRaHIsFbfXo/VfYIfrrEEI//UXZvmjqxEjqSNTfYMnYPtwWa4XfunZw5wlIwypxserVW0XD5prpOeqIEV/Mt8pfTN3mPLxOHJ9LcGZwTV+YeBVwjCwvM5rRSJgWLHahvW9pN4Nam9IAUUuiO0jRvQNlbz+xvHfU7/wOM1r2lOn7mi2WP7Q9BE2RK+p6rMq2GlsBcvpY2Gmgu8exRWlxrJtoIZKj5FpWgYtQyIyiNMVVePvNQqumQ8XASaZk8y+AV308qZvzY1tCz+w3V+5+Re/H77ThjyF+WlJehsLP6/k7z1Rs4VOBWDOV12dAi5izlvN7xrKBcnecNSwkvn0O7YCgeohhE2r2+ayv2byS7KwiMPjCu8MVOmp2IZCZ/a3r/705Wf78mvbR5qop+Gi/ydeaizBp0LqdQL8ry2kRrvFIMrXRuq0trw/6x0mnw+tU5dHVxsglzXSceTY/8ZgrPUeBJXwCJ+uDXbMA0aUgX2D4HPZAo7OdmyGe2Qih2wZu2Cy8CIfSeD+vc4LwqMftPkK7ZqmFnmsU4+iIH/3GVJOGfKC2Sq2KbH7anW5Pic8dhFIbZcXUANzw6Llp+v5d1v4=
+    on_success: change
+    on_failure: change
+  email: false
+deploy:
+  provider: releases
+  api_key:
+    secure: 2dzTiKQp0wtQ2df/4XscUDZcHUDl9Zgwsd3u8YYm28UOb9+GNoCy+dBSbnpkbmT6RunL6cGXxNrvvM5uMPASarj9tuU2v8ngxGt/4D+7c3id9WrR/m/ao1wUHLHMXTbPgbG4inEPrdLBvLycF3nyiUeWsNfNnlGL/uKQtJwjZfn4JXn8LezhWqiS8oQ8Pquz/oKGNbaCzN7k80jrr/GV4LMv+cWotkprjNGotHz+eJG6A6slrhZa0uSu+33KpAn2GMv/ovy6s88oQSQWJyDAYZy+97wkZBj6pcgFR6fV7bpWDT8p0a9VeAAcfslrV39CymJ8pQxVsqZdiNLaDlR4QAwPkyLzJLBXYf96Bo4i7VYFPeX9ITcwpe5ZOS/xk5Bfj1IMK98Lhb/urt9/215aqg7PIuLbzAvsVb53aiCH3iZkPcTFy0832vFVbwsQ6AjzoR/bossd0TUZC8Kq+4LjALCs+Xc6IfniAl2hsNxB7MhM7tGlg3x7yAACG4E3ZBGoLjmNrXar/3Um/X7PjCm77czjI0V6Aw8HbHR/52oqo+/3hemp92yiZlZynrFdsvfHiNXyybBIWGrsMjgTQrxediD36+pM0uCrzHEJvU36TNEPm2mGGNQ66swtsVBUBeM9AxGouS6vVoRSHnjGRcQZl9YGTgJrjU9i63mjYMoltwc=
+  file_glob: true
+  file: build/distributions/*.zip
+  skip_cleanup: true
+  on:
+    tags: true
+    repo: IBM-UrbanCode/IBM-Workload-Automation-UCD
