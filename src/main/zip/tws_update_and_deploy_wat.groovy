@@ -10,7 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.charset.Charset;
 import groovy.io.FileType
-import org.apache.tools.ant.util.*;
+import org.apache.tools.ant.util.LayoutPreservingProperties;
 
 isWindows = System.properties['os.name'].toLowerCase().contains('windows')
 

@@ -74,7 +74,7 @@
   called to execute the targets in the build.xml.
   -->
 
-  <tool-description>Developed by HCL Technologies, the Workload Automation DevOps plugin automates scheduling porting from one env to another.
+  <tool-description>Developed by HCL Technologies, the IBM Workload Automation DevOps plugin automates scheduling porting from one env to another.
   </tool-description>
 
   <!--
@@ -106,7 +106,7 @@
   </meta-html>
 
   <!-- Do not change the release-version, the build process injects it. -->
-  <release-version>1.0</release-version>
+  <release-version>#RELEASE_VERSION#</release-version>
 
 
   <release-notes>
@@ -134,8 +134,14 @@
       you should just append to the existing 'LATEST' tag.
       -->
 
-    <release-note plugin-version="1">
-      Installing this plugin will give you access to the steps listed below. These steps can be used when designing a component process.
-    </release-note>
+        <release-note plugin-version="1">
+          Initial release of the IBM Workload Automation plug-in with the following steps:
+            - Import Job Stream Definition (Distributed)
+            - Generate JCL to import Job Stream Definition (zOS)
+        </release-note>
+
+        <release-note plugin-version="2">
+            Initial open source GitHub release.
+        </release-note>
   </release-notes>
 </pluginInfo>
