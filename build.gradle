@@ -35,7 +35,9 @@
  * }
  */
 
-def pluginVersion = project.hasProperty('pluginVersion') ? project.getProperty('pluginVersion') : ''
+import org.apache.tools.ant.filters.ReplaceTokens
+
+def pluginVersion = project.hasProperty('pluginVersion') ? project.getProperty('pluginVersion') : 'dev'
 
 def pluginName="ibm-workload-automation-open"
 
@@ -64,7 +66,7 @@ dependencies {
     compile 'com.ibm.urbancode.util:i18n-scraper:+'
 
     // https://mvnrepository.com/artifact/org.apache.ant/ant
-    compile group: 'org.apache.ant', name: 'ant', version: '1.8.2'
+    compile group: 'org.apache.ant', name: 'ant', version: '1.8.4'
 
     // This compiles the i18n-scraper script
     compile localGroovy()
@@ -132,7 +134,9 @@ task copyi18n(type: Copy) {
 }
 
 task distPlugin(type: Zip, dependsOn: ['compileGroovy', 'gatherI18n']) {
-    from(sourceSets.zip.groovy.srcDirs)
+    from(sourceSets.zip.groovy.srcDirs) {
+        filter(ReplaceTokens, tokens: [RELEASE_VERSION: pluginVersion])
+    }
 
     into('lib') {
         from copyDeps

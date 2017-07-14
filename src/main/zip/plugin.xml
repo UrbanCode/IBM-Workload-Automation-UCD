@@ -10,7 +10,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
 	<header>
-		<identifier id="com.hcl.tws.plugin.devops" version="2" name="IBM Workload Automation"/>
+		<identifier id="com.hcl.tws.plugin.devops" version="3" name="IBM Workload Automation"/>
 		<description>The IBM Workload Automation plug-in enables you to deploy objects.</description>
 		<tag>IBM Workload Automation/Deploy</tag>
 	</header>
@@ -78,7 +78,7 @@
 
 		<command program="${GROOVY_HOME}/bin/groovy">
 			<arg value="-cp"/>
-			<arg path="classes:lib/ant-1.8.2.jar"/>
+			<arg path="classes:lib/ant-1.8.4.jar"/>
 			<arg file="tws_update_and_deploy_wat.groovy" />
 			<arg file="${PLUGIN_INPUT_PROPS}"/>
 			<arg file="${PLUGIN_OUTPUT_PROPS}"/>
@@ -125,13 +125,14 @@
                        description="A list of environment properties, separated by commas. For example, specify
                                     ${p:environment/allProperties} to add all environment properties as name-value pairs to the
                                     list of object names to translate."
-						default-value="UTF-8"/>
+						default-value="${p:environment/allProperties}"/>
 			</property>
             <property name="customEncoding" >
 				<property-ui type="textBox"
                        label="Custom Encoding"
                        description="Specify a character encoding to use when accessing the file with the definition. This field takes
-                                    precedence over Use System Encoding." />
+                                    precedence over Use System Encoding."
+						default-value="UTF-8"/>
 			</property>
 			<property name="useSystemEncoding" >
 				<property-ui type="checkBox"

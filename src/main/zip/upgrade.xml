@@ -12,4 +12,13 @@
 
     <migrate to-version="2">
     </migrate>
+
+     <migrate to-version="3">
+        <migrate-command name="Generate JCL to import Job Stream Definition (zOS)">
+            <migrate-properties>
+                <migrate-property name="envProps" default="${p:environment/allProperties}" />
+                <migrate-property name="customEncoding" default="UTF-8" />
+            </migrate-properties>
+        </migrate-command>
+     </migrate>
 </plugin-upgrade>
