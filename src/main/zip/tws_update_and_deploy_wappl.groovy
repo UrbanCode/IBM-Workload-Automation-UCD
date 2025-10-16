@@ -5,7 +5,9 @@
  * U.S. Government Users Restricted Rights:  Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
 */
 
-import com.urbancode.air.AirPluginTool
+
+import com.urbancode.air.plugin.cyberark.NewAirPluginTool
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -15,8 +17,8 @@ import org.apache.tools.ant.util.*;
 
 isWindows = System.properties['os.name'].toLowerCase().contains('windows')
 
-def apTool = new AirPluginTool(this.args[0], this.args[1])
-final def workDir = new File('.').canonicalFile
+def apTool = new NewAirPluginTool(this.args[0], this.args[1])
+def workDir = new File('.').canonicalFile
 def properties = apTool.getStepProperties();
 final def props = new Properties()
 final def inputPropsFile = new File(this.args[0]);
@@ -28,7 +30,7 @@ final def comment =      "//*"
 def JCLLLIB =            "//MYJCLLIB JCLLIB ORDER=#jcllib#"
 final def PIFSTEP =      "//PIFSTEP EXEC EQQYXJPX,"
 final def VERSION =      "// VER=V930,"
-final def SUBSYSTEM =    "// SUBSYS=#subsystem#"
+def SUBSYSTEM =    "// SUBSYS=#subsystem#"
 final def OUTDATA =      "//OUTDATA  DD SYSOUT=*,LRECL=4096"
 final def OUTBL =        "//OUTBL    DD SYSOUT=*"
 final def SYSIN =        "//SYSIN    DD *"

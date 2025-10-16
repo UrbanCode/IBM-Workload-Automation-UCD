@@ -14,7 +14,7 @@ import org.apache.tools.ant.util.LayoutPreservingProperties;
 
 isWindows = System.properties['os.name'].toLowerCase().contains('windows')
 
-final def workDir = new File('.').canonicalFile
+def workDir = new File('.').canonicalFile
 final def props = new Properties()
 final def inputPropsFile = new File(this.args[0]);
 final def outputPropsFile = new File(this.args[1]);

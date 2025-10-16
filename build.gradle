@@ -62,22 +62,27 @@ repositories {
 
 dependencies {
     // groovy-plugin-utils pulls down groovy-all as a transitive dependency for the 'compile' configuration
-    compile 'com.ibm.urbancode.plugins:groovy-plugin-utils:+'
-    compile 'com.ibm.urbancode.util:i18n-scraper:+'
+    implementation 'com.ibm.urbancode.plugins:groovy-plugin-utils:+'
+    implementation 'com.ibm.urbancode.util:i18n-scraper:+'
 
     // https://mvnrepository.com/artifact/org.apache.ant/ant
-    compile group: 'org.apache.ant', name: 'ant', version: '1.8.4'
+    implementation group: 'org.apache.ant', name: 'ant', version: '1.8.4'
 
     // This compiles the i18n-scraper script
-    compile localGroovy()
+    implementation localGroovy()
 
 
+}
+
+configurations {
+    compileClasspath.extendsFrom implementation
 }
 
 sourceSets {
     main {
         groovy {
             srcDirs = ['src/main/groovy', 'src/main/zip', "${buildDir}/util"]
+			exclude 'com/urbancode/air/AirPluginTool.groovy'
         }
     }
     zip {
@@ -99,7 +104,7 @@ compileJava {
 task copyDeps(type: Copy) {
     into 'lib'
     copy {
-        from configurations.runtime
+        from configurations.runtimeClasspath
         include { target ->
             return target.file.path.contains("com.ibm.urbancode")
         }
@@ -109,7 +114,7 @@ task copyDeps(type: Copy) {
         }
     }
     copy {
-        from configurations.runtime
+        from configurations.runtimeClasspath
         exclude { target ->
             return target.file.path.contains("com.ibm.urbancode")
         }
@@ -153,9 +158,9 @@ task distPlugin(type: Zip, dependsOn: ['compileGroovy', 'gatherI18n']) {
         exclude 'META-INF', 'i18n-scraper.groovy'
     }
     if (pluginVersion) {
-        archiveName = "${pluginName}-v${pluginVersion}.zip"
+        archiveFileName = "${pluginName}-v${pluginVersion}.zip"
     } else {
-        archiveName = "${pluginName}-dev.zip"
+        archiveFileName = "${pluginName}-dev.zip"
     }
 }
 
@@ -163,9 +168,17 @@ task gatherI18n(type: JavaExec) {
     delete buildLocaleDir
     mkdir buildLocaleDir
 
-    main = 'i18n-scraper'
+	mainClass.set('i18n-scraper')
     args 'build/locale/en.properties'
     classpath = sourceSets.main.runtimeClasspath
+}
+
+tasks.named("extractGPU") {
+    dependsOn("copyDeps")
+}
+
+tasks.named("copyi18n") {
+    dependsOn("copyDeps")
 }
 
 task cleanAll(dependsOn: ['clean', 'cleanCopyDeps', 'cleanDistPlugin', 'cleanGatherI18n'])
