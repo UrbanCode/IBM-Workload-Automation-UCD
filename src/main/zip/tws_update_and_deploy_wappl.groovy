@@ -6,41 +6,32 @@
 */
 
 
-import com.urbancode.air.plugin.cyberark.NewAirPluginTool
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.nio.charset.Charset;
-import groovy.io.FileType
-import org.apache.tools.ant.util.*;
+import com.urbancode.air.plugin.helpers.NewAirPluginTool
 
 isWindows = System.properties['os.name'].toLowerCase().contains('windows')
 
 def apTool = new NewAirPluginTool(this.args[0], this.args[1])
 def workDir = new File('.').canonicalFile
 def properties = apTool.getStepProperties();
-final def props = new Properties()
-final def inputPropsFile = new File(this.args[0]);
-final def outputPropsFile = new File(this.args[1]);
+def props = new Properties()
+def inputPropsFile = new File(this.args[0]);
+def outputPropsFile = new File(this.args[1]);
 
 
 def JCLCARD =            "//TWSRVOP JOB"
-final def comment =      "//*"
+def comment =      "//*"
 def JCLLLIB =            "//MYJCLLIB JCLLIB ORDER=#jcllib#"
-final def PIFSTEP =      "//PIFSTEP EXEC EQQYXJPX,"
-final def VERSION =      "// VER=V930,"
+def PIFSTEP =      "//PIFSTEP EXEC EQQYXJPX,"
+def VERSION =      "// VER=V930,"
 def SUBSYSTEM =    "// SUBSYS=#subsystem#"
-final def OUTDATA =      "//OUTDATA  DD SYSOUT=*,LRECL=4096"
-final def OUTBL =        "//OUTBL    DD SYSOUT=*"
-final def SYSIN =        "//SYSIN    DD *"
-final def OPTIONS1 =     "OPTIONS DBMODE(EXPORT) POSTPROC(Y)"
-final def LOADDEF =      "LOADDEF * DATA(-) LOADER(*)"
-final def DD =           "//         DD *"
-final def OPTIONS2 =     "OPTIONS DBMODE(REPLACE)"
-final def end =          "/*"
-
-
+def OUTDATA =      "//OUTDATA  DD SYSOUT=*,LRECL=4096"
+def OUTBL =        "//OUTBL    DD SYSOUT=*"
+def SYSIN =        "//SYSIN    DD *"
+def OPTIONS1 =     "OPTIONS DBMODE(EXPORT) POSTPROC(Y)"
+def LOADDEF =      "LOADDEF * DATA(-) LOADER(*)"
+def DD =           "//         DD *"
+def OPTIONS2 =     "OPTIONS DBMODE(REPLACE)"
+def end =          "/*"
 
 try {
     inputPropsStream = new FileInputStream(inputPropsFile);
@@ -58,7 +49,7 @@ println "${props.keySet()}"
 println "PROPS VALUES"
 println "${props.values()}"
 
-final def APPL_ID="FEKAPPL";
+def APPL_ID="FEKAPPL";
 
 
 // Get plugin properties

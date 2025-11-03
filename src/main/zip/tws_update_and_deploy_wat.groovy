@@ -15,9 +15,9 @@ import org.apache.tools.ant.util.LayoutPreservingProperties;
 isWindows = System.properties['os.name'].toLowerCase().contains('windows')
 
 def workDir = new File('.').canonicalFile
-final def props = new Properties()
-final def inputPropsFile = new File(this.args[0]);
-final def outputPropsFile = new File(this.args[1]);
+def props = new Properties()
+def inputPropsFile = new File(this.args[0]);
+def outputPropsFile = new File(this.args[1]);
 
 
 try {
@@ -287,19 +287,21 @@ def updateWithStreams(File file, Charset charset) {
     try {
         inStream = new FileInputStream(file);
         props.load(inStream)
-    }
-    finally {
-        inStream?.close()
-    }
+    }catch (IOException e) {
+		throw new RuntimeException(e);
+	}
+
+    inStream?.close()
+
     updateProperties(props)
     OutputStream outStream = null
     try {
         outStream = new FileOutputStream(file)
         props.store(outStream, "")
-    }
-    finally {
-        outStream?.close()
-    }
+    }catch (IOException e) {
+		throw new RuntimeException(e);		
+	}
+	outStream?.close()
 }
 
 def wappman(workDir) {
