@@ -5,7 +5,12 @@
  * U.S. Government Users Restricted Rights:  Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
 */
 
-
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.charset.Charset;
+import groovy.io.FileType
+import org.apache.tools.ant.util.*;
 import com.urbancode.air.plugin.helpers.NewAirPluginTool
 
 isWindows = System.properties['os.name'].toLowerCase().contains('windows')
